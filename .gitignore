@@ -182,9 +182,9 @@ cython_debug/
 .abstra/
 
 # Visual Studio Code
-#  Visual Studio Code specific template is maintained in a separate VisualStudioCode.gitignore 
+#  Visual Studio Code specific template is maintained in a separate VisualStudioCode.gitignore
 #  that can be found at https://github.com/github/gitignore/blob/main/Global/VisualStudioCode.gitignore
-#  and can be added to the global gitignore or merged into this file. However, if you prefer, 
+#  and can be added to the global gitignore or merged into this file. However, if you prefer,
 #  you could uncomment the following to ignore the entire vscode folder
 # .vscode/
 
@@ -205,3 +205,77 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# -------------------------
+# Python
+# -------------------------
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# -------------------------
+# Virtual environments
+# -------------------------
+venv/
+env/
+.venv/
+
+# -------------------------
+# Environment variables
+# -------------------------
+.env
+
+# -------------------------
+# Data ( DO NOT PUSH DATA )
+# -------------------------
+data/raw/*
+data/processed/*
+
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+
+# -------------------------
+# Models/ artifacts
+# -------------------------
+artifacts/models/*
+artifacts/metrics/*
+
+# -------------------------
+# Logs
+# -------------------------
+logs/*
+*.log
+
+# -------------------------
+# Jupyter
+# -------------------------
+.ipynb_checkpoints/
+
+# -------------------------
+# IDE
+# -------------------------
+.vscode/
+.idea/
+
+# -------------------------
+# OS
+# -------------------------
+.DS_Store
+Thumbs.db
+
+# -------------------------
+# Streamlit cache
+# -------------------------
+.streamlit
+
+# -------------------------
+# Testing
+# -------------------------
+.coverage
+htmlcov/
+
+# -------------------------
+Misc
+# -------------------------
+*.sqlite3
