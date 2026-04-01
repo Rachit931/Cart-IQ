@@ -10,6 +10,7 @@ dependencies = [
     "scikit-learn",
     "fastapi",
     "streamlit",
+    "openpyxl>=3.1.5",
 ]
 
 [tool.black]
