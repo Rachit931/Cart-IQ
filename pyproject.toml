@@ -1,29 +1,61 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "cartiq"
 version = "0.1.0"
 description = "E-commerce Intelligence System"
+readme = "README.md"
+requires-python = ">=3.10,<3.14"
 authors = [
     { name = "Rachit" }
 ]
 dependencies = [
-    "pandas",
-    "scikit-learn",
     "fastapi",
+    "joblib",
+    "matplotlib",
+    "numpy",
+    "openpyxl>=3.1.5",
+    "pandas",
+    "pydantic",
+    "pyyaml",
+    "scikit-learn",
+    "seaborn",
     "streamlit",
+    "uvicorn",
 ]
 
 [tool.black]
 line-length = 88
+target-version = ["py310"]
+extend-exclude = '''
+/(
+    \.git
+  | \.pytest_cache
+  | \.venv
+  | artifacts
+  | data
+)/
+'''
 
 [tool.isort]
 profile = "black"
+line_length = 88
+skip = [".venv", "artifacts", "data"]
 
-[tool.flake8]
-max-line-length = 88
-exclude = [".pycache__", "venv"]
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-q"
 
 [dependency-groups]
 dev = [
+    "black==24.3.0",
+    "flake8==7.0.0",
     "ipykernel>=7.2.0",
+    "isort==5.13.2",
     "jupyter>=1.1.1",
+    "pre-commit>=3.7.0",
+    "pytest>=8.0.0",
 ]
