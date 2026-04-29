@@ -18,6 +18,7 @@ dependencies = [
     "numpy",
     "openpyxl>=3.1.5",
     "pandas",
+    "pre-commit>=4.6.0",
     "pydantic",
     "pyyaml",
     "scikit-learn",
