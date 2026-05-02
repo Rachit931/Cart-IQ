@@ -21,6 +21,7 @@ def build_behavior_features(df: pd.DataFrame) -> pd.DataFrame:
     - behavior DataFrame
     """
 
+<<<<<<< HEAD
     df = df.copy()
 
     # Create Total Price column
@@ -51,3 +52,5 @@ def build_behavior_features(df: pd.DataFrame) -> pd.DataFrame:
     behavior["StdOrderValue"] = behavior["StdOrderValue"].fillna(0)
 
     return behavior
+=======
+>>>>>>> 366aeaf (feat: add time based features)
