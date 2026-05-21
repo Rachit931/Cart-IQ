@@ -23,3 +23,41 @@ def time_based_features(df: pd.DataFrame) -> pd.DataFrame:
     """
 
     df = df.copy()
+
+    df["InvoiceDate"] = pd.to_datetime(df["InvoiceDate"])
+
+    customer_dates = (
+        df.groupby("CustomerID")
+        .agg(
+            FirstPurchase=("InvoiceDate", "min"),
+            LastPurchase=("InvoiceDate", "max"),
+        )
+        .reset_index()
+    )
+
+    reference_date = df["InvoiceDate"].max()
+
+    # Core Durations
+    customer_dates["CustomerTenure"] = (
+        customer_dates["LastPurchase"] - customer_dates["FirstPurchase"]
+    ).dt.days
+
+    customer_dates["Recency"] = (
+        reference_date - customer_dates["LastPurchase"]
+    ).dt.days
+
+    # Avoid divide-by-zero
+    customer_dates["CustomerTenure"] = customer_dates["CustomerTenure"].replace(0, 1)
+
+    # Engineered signal
+    customer_dates["RecencyNormalized"] = (
+        customer_dates["Recency"] / customer_dates["CustomerTenure"]
+    )
+
+    return customer_dates[
+        [
+            "CustomerID",
+            "CustomerTenure",
+            "RecencyNormalized",
+        ]
+    ]
