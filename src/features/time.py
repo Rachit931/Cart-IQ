@@ -8,6 +8,7 @@ def time_based_features(df: pd.DataFrame) -> pd.DataFrame:
 
     Features:
     - CustomerTenure: Total active duration of customer (days)
+
     - RecencyNormalized: Recency scaled by tenure
       (captures inactivity relative to customer lifetime)
 

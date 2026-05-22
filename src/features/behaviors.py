@@ -9,8 +9,10 @@ def build_behavior_features(df: pd.DataFrame) -> pd.DataFrame:
     Features:
     - AvgOrderValue: Average money
     spent per order
+
     - AvgIemsPerOrder: Average number
     of items per order
+
     - StdOrderValue: Variation in
     spending (consistency signal)
 
