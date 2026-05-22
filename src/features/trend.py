@@ -1,7 +1,32 @@
+import numpy as np
 import pandas as pd
 
 
 def build_trend_features(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Build customer spending trend features
+
+    Features:
+    ---------
+    - RecentSpend:
+        Spend during recent time window
+
+    - OldSpend:
+        Spend before recent window
+
+    - SpendGrowthRate:
+        Log-based spending growth signal
+
+    Parameters:
+    -----------
+    - df:
+        Cleaned transaction-level DataFrame
+
+    Returns:
+    --------
+    - trend features DataFrame
+    """
+
     df = df.copy()
 
     df["InvoiceDate"] = pd.to_datetime(df["InvoiceDate"])
@@ -26,8 +51,9 @@ def build_trend_features(df: pd.DataFrame) -> pd.DataFrame:
 
     trend = recent_spend.merge(old_spend, on="CustomerID", how="outer").fillna(0)
 
-    trend["SpendGrowthRate"] = (trend["RecentSpend"] - trend["OldSpend"]) / (
-        trend["OldSpend"] + 1
+    # Stable log-based growth signal
+    trend["SpendGrowthRate"] = np.log1p(trend["RecentSpend"]) - np.log1p(
+        trend["OldSpend"]
     )
 
     return trend
