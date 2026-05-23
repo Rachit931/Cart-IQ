@@ -1,7 +1,7 @@
 import pandas as pd
 
 
-def time_based_features(df: pd.DataFrame) -> pd.DataFrame:
+def build_time_features(df: pd.DataFrame) -> pd.DataFrame:
     """
     Build time-based customer-level features
     from transaction-level data.

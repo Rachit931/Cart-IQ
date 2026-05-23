@@ -1,18 +1,18 @@
+from pathlib import Path
 import pandas as pd
 
+DATA_PATH = Path("../data/raw/Online_Retail.xlsx")
 
-def load_raw_data(path: str) -> pd.DataFrame:
+
+def load_raw_data() -> pd.DataFrame:
     """
-    Load the raw e-commerce datasert from Excel file.
-
-    Agrs:
-        path (str): Path to the excel file
-
-    Returns:
-        pd.DataFrame: Loaded DataFrame
+    Load raw e-commerce dataset from Excel file.
     """
 
-    df = pd.read_excel(path)
+    if not DATA_PATH.exists():
+        raise FileNotFoundError(f"Dataset not found at {DATA_PATH}")
+
+    df = pd.read_excel(DATA_PATH)
 
     if df.empty:
         raise ValueError("Loaded DataFrame is empty")
@@ -22,12 +22,14 @@ def load_raw_data(path: str) -> pd.DataFrame:
         "StockCode",
         "Description",
         "Quantity",
+        "InvoiceDate",
         "UnitPrice",
         "CustomerID",
         "Country",
     ]
 
     missing_cols = set(expected_columns) - set(df.columns)
+
     if missing_cols:
         raise ValueError(f"Missing columns: {missing_cols}")
 
