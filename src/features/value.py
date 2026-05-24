@@ -10,11 +10,11 @@ def build_value_features(df: pd.DataFrame) -> pd.DataFrame:
     - TotalSpend:
         Total money spent by customer
 
-    - AvgMonthlySpend:
+    - AvgvalueSpend:
         Average spend per active month
 
     - MonthlySpendStd:
-        Monthly spending volatility
+        value spending volatility
         (consistency signal)
 
     Parameters:
@@ -37,25 +37,19 @@ def build_value_features(df: pd.DataFrame) -> pd.DataFrame:
 
     monthly_spend = (
         df.groupby(["CustomerID", "YearMonth"])
-        .agg(MonthlySpend=("TotalPrice", "sum"))
+        .agg(valueSpend=("TotalPrice", "sum"))
         .reset_index()
     )
 
-    monthly_features = (
+    value_features = (
         monthly_spend.groupby("CustomerID")
         .agg(
-            AvgMonthlySpend=("MonthlySpend", "mean"),
-            MonthlySpendStd=("MonthlySpend", "std"),
+            AvgvalueSpend=("valueSpend", "mean"),
+            MonthlySpendStd=("valueSpend", "std"),
         )
         .reset_index()
     )
 
-    monthly_features["MonthlySpendStd"] = monthly_features["MonthlySpendStd"].fillna(0)
-
-    total_spend = (
-        df.groupby("CustomerID").agg(TotalSpend=("TotalPrice", "sum")).reset_index()
-    )
-
-    value_features = total_spend.merge(monthly_features, on="CustomerID", how="left")
+    value_features["MonthlySpendStd"] = value_features["MonthlySpendStd"].fillna(0)
 
     return value_features
