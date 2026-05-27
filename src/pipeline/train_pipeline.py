@@ -1,3 +1,4 @@
+import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
@@ -27,8 +28,8 @@ def train_pipeline(
 
     Returns:
     ----------
-    x_train
-    x_test
+    X_train
+    X_test
     y_train
     y_test
     """
@@ -59,20 +60,20 @@ def train_pipeline(
         "Recency",
     ]
 
-    x = df.drop(columns=drop_columns)
+    X = df.drop(columns=drop_columns)
 
     y = df["Churn"]
 
     print("\nFeature Matrix Shape:")
 
-    print(f"x shape: {x.shape}")
+    print(f"X shape: {X.shape}")
 
     print(f"y shape: {y.shape}")
 
     # STRATIFIED SPLIT
 
-    x_train, x_test, y_train, y_test = train_test_split(
-        x,
+    X_train, X_test, y_train, y_test = train_test_split(
+        X,
         y,
         test_size=test_size,
         stratify=y,
@@ -83,23 +84,29 @@ def train_pipeline(
 
     scaler = StandardScaler()
 
-    x_train = scaler.fit_transform(x_train)
+    X_train = pd.DataFrame(
+        scaler.fit_transform(X_train),
+        columns=X_train.columns,
+    )
 
-    x_test = scaler.transform(x_test)
+    X_test = pd.DataFrame(
+        scaler.transform(X_test),
+        columns=X_test.columns,
+    )
 
     print("\nTrain/Test Split:")
 
-    print(f"x_train: {x_train.shape}")
+    print(f"X_train: {X_train.shape}")
 
-    print(f"x_test : {x_test.shape}")
+    print(f"X_test : {X_test.shape}")
 
     print(f"y_train:\n" f"{y_train.value_counts(normalize=True)}")
 
     print(f"\ny_test:\n" f"{y_test.value_counts(normalize=True)}")
 
     return (
-        x_train,
-        x_test,
+        X_train,
+        X_test,
         y_train,
         y_test,
     )
