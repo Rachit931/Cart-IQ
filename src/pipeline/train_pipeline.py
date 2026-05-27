@@ -1,43 +1,45 @@
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+
 from src.data.load_data import load_processed_data
 from src.targets.churn import create_churn_table
 
 
-def train_pipeline(test_size: float = 0.2):
+def train_pipeline(
+    test_size: float = 0.2,
+):
     """
-    Build train/test datasets
+    Prepare train/test datasets
     for churn classification.
 
     Steps:
     ----------
     1. Load processed dataset
     2. Create churn labels
-    3. Sort customers chronologically
-    4. Perform time-based split
-    5. Prepare train/test sets
+    3. Prepare features + target
+    4. Stratified train/test split
 
     Parameters:
     ----------
     test_size: float
-        Fraction of data used
+        Fraction of dataset used
         for testing
 
     Returns:
     ----------
-    X_train, X_test,
-    y_train, y_test
+    x_train
+    x_test
+    y_train
+    y_test
     """
 
-    # =================================
-    # LOAD PROCESSED DATASET
-    # =================================
+    # LOAD DATA
 
     df = load_processed_data()
 
     print(f"Loaded dataset shape: " f"{df.shape}")
 
-    # =================================
     # CREATE CHURN LABELS
-    # =================================
 
     df = create_churn_table(
         customer_features=df,
@@ -48,53 +50,59 @@ def train_pipeline(test_size: float = 0.2):
 
     print(df["Churn"].value_counts(normalize=True))
 
-    # =================================
-    # SORT CHRONOLOGICALLY
-    # =================================
-
-    df = df.sort_values(by="LastPurchaseDate")
-
-    # =================================
-    # TIME-BASED SPLIT
-    # =================================
-
-    split_index = int(len(df) * (1 - test_size))
-
-    train_df = df.iloc[:split_index]
-
-    test_df = df.iloc[split_index:]
-
-    print("\nTrain/Test Split:")
-
-    print(f"Train size: {train_df.shape}")
-
-    print(f"Test size : {test_df.shape}")
-
-    # =================================
     # PREPARE FEATURES + TARGET
-    # =================================
 
     drop_columns = [
         "CustomerID",
         "Churn",
         "LastPurchaseDate",
+        "Recency",
     ]
 
-    X_train = train_df.drop(columns=drop_columns)
+    x = df.drop(columns=drop_columns)
 
-    y_train = train_df["Churn"]
+    y = df["Churn"]
 
-    X_test = test_df.drop(columns=drop_columns)
+    print("\nFeature Matrix Shape:")
 
-    y_test = test_df["Churn"]
+    print(f"x shape: {x.shape}")
 
-    print("\nFeature Shapes:")
+    print(f"y shape: {y.shape}")
 
-    print(f"X_train: {X_train.shape}")
+    # STRATIFIED SPLIT
 
-    print(f"X_test : {X_test.shape}")
+    x_train, x_test, y_train, y_test = train_test_split(
+        x,
+        y,
+        test_size=test_size,
+        stratify=y,
+        random_state=42,
+    )
 
-    return (X_train, X_test, y_train, y_test)
+    # FEATURE SCALING
+
+    scaler = StandardScaler()
+
+    x_train = scaler.fit_transform(x_train)
+
+    x_test = scaler.transform(x_test)
+
+    print("\nTrain/Test Split:")
+
+    print(f"x_train: {x_train.shape}")
+
+    print(f"x_test : {x_test.shape}")
+
+    print(f"y_train:\n" f"{y_train.value_counts(normalize=True)}")
+
+    print(f"\ny_test:\n" f"{y_test.value_counts(normalize=True)}")
+
+    return (
+        x_train,
+        x_test,
+        y_train,
+        y_test,
+    )
 
 
 if __name__ == "__main__":
