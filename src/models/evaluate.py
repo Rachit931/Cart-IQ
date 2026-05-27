@@ -43,17 +43,13 @@ def evaluate_classifier(
     None
     """
 
-    # ==========================
     # PREDICTIONS
-    # ==========================
 
     y_pred = model.predict(X_test)
 
     y_prob = model.predict_proba(X_test)[:, 1]
 
-    # ==========================
     # METRICS
-    # ==========================
 
     accuracy = accuracy_score(y_test, y_pred)
 
@@ -65,9 +61,7 @@ def evaluate_classifier(
 
     roc_auc = roc_auc_score(y_test, y_prob)
 
-    # ==========================
     # OUTPUT
-    # ==========================
 
     print("\nMetrics:")
 
@@ -81,17 +75,13 @@ def evaluate_classifier(
 
     print(f"ROC-AUC  : {roc_auc:.4f}")
 
-    # ==========================
     # CONFUSION MATRIX
-    # ==========================
 
     print("\nConfusion Matrix:")
 
     print(confusion_matrix(y_test, y_pred))
 
-    # ==========================
     # CLASSIFICATION REPORT
-    # ==========================
 
     print("\nClassification Report:")
 
