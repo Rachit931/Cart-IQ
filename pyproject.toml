@@ -25,7 +25,7 @@ dependencies = [
     "seaborn",
     "streamlit",
     "uvicorn",
-    "xgboost"
+    "xgboost>=3.2.0",
 ]
 
 [tool.black]
