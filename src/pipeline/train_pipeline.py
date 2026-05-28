@@ -109,6 +109,7 @@ def train_pipeline(
         X_test,
         y_train,
         y_test,
+        scaler,
     )
 
 
