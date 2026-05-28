@@ -238,8 +238,7 @@ data/processed/*
 # -------------------------
 # Models/ artifacts
 # -------------------------
-artifacts/models/*
-artifacts/metrics/*
+artifacts/
 
 # -------------------------
 # Logs

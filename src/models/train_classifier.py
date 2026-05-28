@@ -4,7 +4,7 @@ from xgboost import XGBClassifier
 
 
 def train_logistic_regression(
-    x_train,
+    X_train,
     y_train,
 ):
     """
@@ -13,7 +13,7 @@ def train_logistic_regression(
     Parameters:
     ----------
     X_train:
-        Training feature matrix
+        Training feature matriX
 
     y_train:
         Training labels
@@ -26,21 +26,21 @@ def train_logistic_regression(
     model = LogisticRegression(max_iter=1000, random_state=42)
 
     model.fit(
-        x_train,
+        X_train,
         y_train,
     )
 
     return model
 
 
-def train_random_forest(x_train, y_train):
+def train_random_forest(X_train, y_train):
     """
     Train Random Forest Classifier.
 
     Parameters:
     -----------
-    x_train:
-        Training feature matrix
+    X_train:
+        Training feature matriX
 
     y_train:
         Training labels
@@ -52,13 +52,13 @@ def train_random_forest(x_train, y_train):
 
     model = RandomForestClassifier(n_estimators=200, random_state=42, n_jobs=-1)
 
-    model.fit(x_train, y_train)
+    model.fit(X_train, y_train)
 
     return model
 
 
 def train_xgboost(
-    x_train,
+    X_train,
     y_train,
 ):
     """
@@ -67,7 +67,7 @@ def train_xgboost(
     Parameters:
     ----------
     X_train:
-        Training feature matrix
+        Training feature matriX
 
     y_train:
         Training labels
@@ -85,6 +85,6 @@ def train_xgboost(
         eval_metric="logloss",
     )
 
-    model.fit(x_train, y_train)
+    model.fit(X_train, y_train)
 
     return model
