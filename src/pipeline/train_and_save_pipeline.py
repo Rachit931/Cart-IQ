@@ -51,6 +51,18 @@ def train_and_save_pipeline():
         "artifacts/churn/features/feature_columns.pkl",
     )
 
+    # SAVE EVALUATION DATA
+
+    save_artifact(
+        X_test,
+        "artifacts/churn/evaluation/x_test.pkl",
+    )
+
+    save_artifact(
+        y_test,
+        "artifacts/churn/evaluation/y_test.pkl",
+    )
+
     # SAVE METADATA
 
     save_metadata(
