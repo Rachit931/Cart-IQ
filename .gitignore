@@ -236,6 +236,11 @@ data/processed/*
 !data/processed/.gitkeep
 
 # -------------------------
+# GENERATED REPORTS AND PLOTS
+#--------------------------
+reports/
+
+# -------------------------
 # Models/ artifacts
 # -------------------------
 artifacts/

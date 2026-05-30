@@ -10,7 +10,7 @@ def build_value_features(df: pd.DataFrame) -> pd.DataFrame:
     - TotalSpend:
         Total money spent by customer
 
-    - AvgvalueSpend:
+    - AvgValueSpend:
         Average spend per active month
 
     - MonthlySpendStd:
@@ -44,7 +44,7 @@ def build_value_features(df: pd.DataFrame) -> pd.DataFrame:
     value_features = (
         monthly_spend.groupby("CustomerID")
         .agg(
-            AvgvalueSpend=("valueSpend", "mean"),
+            AvgValueSpend=("valueSpend", "mean"),
             MonthlySpendStd=("valueSpend", "std"),
         )
         .reset_index()
