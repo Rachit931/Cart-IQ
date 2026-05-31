@@ -1,141 +1,131 @@
-# CartIQ — E-Commerce Intelligence System
+# CartIQ - E-Commerce Intelligence System
 
-An end-to-end machine learning system for analyzing customer behavior in e-commerce platforms using customer analytics, churn prediction, and recommendation systems.
+CartIQ is a production-style machine learning system for customer intelligence in e-commerce.
 
----
+Using transactional purchase data, the system provides:
 
-## Problem Statement
+- Customer Churn Prediction
+- Customer Segmentation
+- Recommendation Systems
+- Revenue Intelligence
+- Explainable Business Insights
 
-E-commerce platforms struggle to understand customer behavior at scale:
-
-- Which customers are likely to purchase?
-- Which customers are at risk of churn?
-- How much will a customer spend?
-- What products should be recommended?
-
-CartIQ combines multiple machine learning workflows into a unified customer intelligence system.
+The project is built using the Online Retail dataset from the UCI Machine Learning Repository.
 
 ---
 
-## Dataset
-
-This project uses the Online Retail dataset from the UCI Machine Learning Repository.
+# Dataset
 
 Dataset Link:
+
 https://archive.ics.uci.edu/dataset/352/online+retail
 
----
-
-## Dataset Setup
-
-1. Download the dataset from the link above
-
-2. Rename the file to:
+Place the dataset as:
 
 ```text
-online_retail.xlsx
-```
-
-3. Place the file inside:
-
-```text
-data/raw/
-```
-
-Final structure:
-
-```text
-data/
-└── raw/
-    └── online_retail.xlsx
+data/raw/online_retail.xlsx
 ```
 
 ---
 
-## Current Scope
+# Project Architecture
 
-The current implementation includes:
+```mermaid
+flowchart TD
 
-- Data loading pipeline
-- Data cleaning pipeline
-- Exploratory Data Analysis (EDA)
-- Customer-level feature engineering
-- Churn target generation
-- Time-based train/test splitting
-- Classification model training
-- Evaluation pipeline
+A[Raw Transaction Data]
+
+--> B[Data Cleaning]
+
+B --> C[Feature Engineering]
+
+C --> D[Customer Feature Store]
+
+D --> E[Churn Prediction]
+
+D --> F[Customer Segmentation]
+
+D --> G[Recommendation System]
+
+E --> H[Business Insights]
+
+F --> H
+
+G --> H
+```
 
 ---
 
-## Exploratory Data Analysis (EDA)
+# Feature Engineering
 
-Performed analysis on:
+Customer-level features are generated from transaction history.
 
-- Revenue distribution
-- Customer purchase frequency
-- Basket size
-- Monthly activity trends
-- Recency distribution
-- Churn threshold analysis
+## RFM Features
 
----
-
-## Feature Engineering
-
-### RFM Features
 - Recency
 - Frequency
 - Monetary
-- LastPurchaseDate
 
-### Behavioral Features
-- AvgOrderValue
+## Behavioral Features
+
 - AvgItemsPerOrder
+- AvgUniqueProductsPerOrder
+
+## Product Features
+
+- UniqueProducts
+
+## Value Features
+
+- AvgValueSpend
+- AvgOrderValue
+- MonthlySpendStd
 - StdOrderValue
 
-### Value Features
-- AvgMonthlySpend
-- MonthlySpendStd
+## Temporal Features
 
-### Product Features
-- Product diversity metrics
-- Unique purchasing behavior
+- CustomerTenure
+- LastPurchaseDate
 
-### Temporal Features
-- Activity timeline features
+## Trend Features
 
-### Trend Features
-- Spending trend behavior
+- RecentSpend
+- OldSpend
+- SpendGrowthRate
 
 ---
 
-## Churn Classification
+# Churn Prediction System
 
-Customers inactive for more than **60 days** are labeled as churned based on recency distribution analysis.
-
----
-
-## Time-Based Splitting
-
-Chronological train/test splitting is used instead of random splitting to reduce temporal leakage.
+## Pipeline
 
 ```mermaid
-flowchart LR
+flowchart TD
 
-A[Older Customer Data] --> B[Training Set]
+A[Customer Features]
 
-C[Recent Customer Data] --> D[Test Set]
+--> B[Churn Label Generation]
+
+B --> C[Train Pipeline]
+
+C --> D[Model Training]
+
+D --> E[Cross Validation]
+
+E --> F[Hyperparameter Tuning]
+
+F --> G[Model Evaluation]
+
+G --> H[Artifact Saving]
+
+H --> I[Prediction Pipeline]
 ```
 
----
-
-## Models Implemented
+## Models
 
 - Logistic Regression
 - Random Forest
 - XGBoost
-
----
 
 ## Evaluation Metrics
 
@@ -146,98 +136,164 @@ C[Recent Customer Data] --> D[Test Set]
 - ROC-AUC
 - Confusion Matrix
 
+## Status
+
+✅ Completed
+
 ---
 
-## Current Pipeline
+# Customer Segmentation System
+
+## Clustering Features
+
+- Recency
+- Frequency
+- Monetary
+- CustomerTenure
+- UniqueProducts
+- SpendGrowthRate
+
+## Pipeline
 
 ```mermaid
 flowchart TD
 
-A[Raw Transaction Data]
---> B[Data Cleaning]
+A[Customer Features]
 
-B --> C[Feature Engineering]
+--> B[train_clustering_pipeline.py]
 
-C --> D[Customer-Level Dataset]
+B --> C[tune_clustering.py]
 
-D --> E[Churn Label Generation]
+C --> D[clustering.py]
 
-E --> F[Time-Based Split]
+D --> E[evaluate_clustering.py]
 
-F --> G[Model Training]
+E --> F[train_and_save_clustering.py]
 
-G --> H[Model Evaluation]
+F --> G[predict_cluster.py]
+
+F --> H[cluster_analysis.py]
 ```
+
+## Candidate Algorithms
+
+- KMeans
+- Agglomerative Clustering
+- Gaussian Mixture Models
+
+## Status
+
+🚧 In Progress
+
+Completed:
+
+- Clustering feature selection
+- Clustering training pipeline
 
 ---
 
-## Repository Structure
+# Repository Structure
 
 ```text
 src/
-├── data/           # data loading + cleaning
-├── features/       # feature engineering
-├── targets/        # churn labeling
-├── models/         # training + evaluation
-├── pipeline/       # orchestration pipelines
-├── recommender/    # recommendation modules
-└── utils/          # helper utilities
+
+├── data/
+├── features/
+├── models/
+├── pipeline/
+├── targets/
+├── recommender/
+├── explainability/
+└── utils/
+
+artifacts/
+data/
+reports/
+notebooks/
+tests/
 ```
 
 ---
 
-## Running the Project
+# Current Progress
 
-### Build Processed Dataset
+## Completed
 
-```bash
-uv run python -m src.pipeline.build_processed_dataset
-```
+- Data Cleaning
+- Exploratory Data Analysis
+- Feature Engineering
+- Churn Label Creation
+- Classification Pipeline
+- Cross Validation
+- Hyperparameter Tuning
+- Model Evaluation
+- Artifact Management
+- Prediction Pipeline
 
-### Run Classification Pipeline
+## In Progress
 
-```bash
-uv run python -m src.pipeline.train_pipeline
-```
+- Customer Segmentation (Clustering)
 
----
+## Planned
 
-## Project Status
-
-### Completed
-- [x] Data cleaning
-- [x] EDA
-- [x] Feature engineering
-- [x] Churn labeling
-- [x] Time-based splitting
-- [x] Baseline classification models
-- [x] Evaluation pipeline
-
-### Planned
-- [ ] Cross-validation
-- [ ] Hyperparameter tuning
-- [ ] Regression pipeline
-- [ ] Clustering pipeline
-- [ ] Recommendation system
-- [ ] FastAPI deployment
-- [ ] Streamlit dashboard
+- Recommendation Engine
+- Revenue Forecasting
+- FastAPI Backend
+- Streamlit Dashboard
+- Docker Deployment
 
 ---
 
-## Tech Stack
+# Tech Stack
 
-- Python
+## Data Processing
+
 - Pandas
 - NumPy
-- Scikit-learn
+
+## Machine Learning
+
+- Scikit-Learn
 - XGBoost
+
+## Deep Learning
+
+- PyTorch
+
+## Visualization
+
 - Matplotlib
-- Jupyter Notebook
-- FastAPI *(planned)*
-- Streamlit *(planned)*
+- Seaborn
+
+## Deployment
+
+- FastAPI
+- Streamlit
 
 ---
 
-## License
+# Future Roadmap
+
+## Phase 1
+
+- ✅ Churn Prediction
+- 🚧 Customer Segmentation
+- ⏳ Recommendation System
+
+## Phase 2
+
+- Revenue Forecasting
+- Customer Lifetime Value Modeling
+- Business Intelligence Dashboard
+
+## Phase 3
+
+- Neural Collaborative Filtering
+- Deep Learning Forecasting Models
+- Advanced Customer Representation Learning
+
+---
+
+# License
 
 This project is licensed under the MIT License.
